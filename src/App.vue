@@ -68,7 +68,7 @@ export default {
     },
     data() {
         return {
-            title: "开课吧课程",
+            title: "开课吧课程11",
             courseInfo: {
                 id: 2,
                 name: "",
