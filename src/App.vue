@@ -34,7 +34,7 @@
                 </tr>
             </table>
         </div>
-        <cart :courseItem="courseItem"></cart>
+        <cart :courseItem="courseItem" @removeCoure="remove"></cart>
     </div>
 </template>
 
@@ -50,11 +50,10 @@ export default {
         addCourseToCart(index) {
             let item = this.courseList[index];
             let isHasCourse = this.courseItem.find(x => x.id == item.id);
-            
-            if (isHasCourse)
-            {
+
+            if (isHasCourse) {
                 isHasCourse.number += 1;
-            } else{
+            } else {
                 this.courseItem.push({
                     ...item,
                     number: 1,
@@ -63,14 +62,37 @@ export default {
             }
         },
         addCourseToList() {
-            this.courseList.push(this.courseInfo);
+            if (this.courseInfo.name == "") {
+                alert("请输入课程名称");
+            } else if (!this.checkFn(this.courseInfo.name)) {
+                alert("此课程已存在");
+            } else if (this.courseInfo.price == "") {
+                alert("请输入课程价格");
+            } else {
+
+                this.courseList.push({...this.courseInfo, id: [...this.courseList].pop().id + 1});
+
+                this.courseInfo.name = '';
+                this.courseInfo.price = '';
+            }
+            console.log(this.courseList);
+        },
+        remove(index) {
+            this.courseItem.splice(index, 1);
+        },
+        checkFn(obj) {
+            for (var i = 0; i < this.courseList.length; i++) {
+                if (this.courseList[i].name == obj) {
+                    return false;
+                }
+            }
+            return true;
         }
     },
     data() {
         return {
             title: "开课吧课程11",
             courseInfo: {
-                id: 2,
                 name: "",
                 price: ""
             },
@@ -94,12 +116,12 @@ export default {
 </script>
 
 <style>
-    #app {
-        font-family: Avenir, Helvetica, Arial, sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-align: center;
-        color: #2c3e50;
-        margin-top: 60px;
-    }
+#app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+}
 </style>
